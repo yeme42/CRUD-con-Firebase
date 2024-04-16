@@ -1,0 +1,66 @@
+<h1 class="d-flex justify-content-center">Listado de Heroes</h1>
+<hr>
+
+  <div *ngIf="!cargando && heroes.length === 0" class="alert alert-warning text-center mt-3 animated fadeIn faster">
+    <h4 class="alert-heading">No hay registros</h4>
+    <p>
+      <i class="pi pi-info-circle" style="font-size: 6rem"></i>
+    </p>
+  </div>
+
+  <div *ngIf="cargando" class="alert alert-info text-center mt-3 animated fadeIn faster">
+    <h4 class="alert-heading">Cargando</h4>
+    <p>
+      <i class="pi pi-spin pi-spinner" style="font-size: 4rem"></i>
+
+    </p>
+    <p class="mb-0">
+        Espere porfavor
+    </p>
+  </div>
+
+  <div class="card" *ngIf="!cargando && heroes.length > 0" class="table mt-3 animated fadeIn faster">
+    <p-table
+        [value]="heroes"
+        [paginator]="true"
+        [rows]="5"
+        [showCurrentPageReport]="true"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        currentPageReportTemplate="Mostrando desde {first} hasta {last} de {totalRecords} heroes"
+        [rowsPerPageOptions]="[5, 10, 25, 50]"
+    >
+        <ng-template pTemplate="header">
+
+          <tr class="table-dark" >
+            <th style="width:20%" >Nombre</th>
+            <th style="width:25%" >Poder</th>
+            <th style="width:15%" >Vivo</th>
+            <th style="width:15%" >Accion</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body"  let-hero >
+            <tr>
+              <td>{{hero.nombre}}</td>
+              <td>{{hero.poder}}</td>
+              <td>
+                <label *ngIf="hero.vivo" class="badge bg-success">Vivo</label>
+                <label *ngIf="!hero.vivo" class="badge bg-danger">Muerto</label>
+              </td>
+              <td>
+                <button class="btn btn-info m-1"
+                        (click)="cambiar()" 
+                        [routerLink]="['/heroe', hero.id]" >
+                  <i class="fa fa-pen"></i>
+                </button>
+                <button class="btn btn-danger " (click)="eliminarheroe(hero, hero.id )" >
+                  <i class="fa fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="paginatorleft">
+            <p-button [routerLink]="['/heroe/nuevo']" routerLinkActive="router-link-active" type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
+        </ng-template>
+    </p-table>
+</div>
+
